@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart — Sumina's Stationery</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="cart-page">
+  <div class="container">
+    <h1 class="section-title" style="margin-bottom:32px;" data-key="cart_title">Your Cart</h1>
+    <div class="cart-layout">
+      <div id="cart-items"></div>
+      <div id="cart-summary"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  renderCartPage();
+  document.addEventListener("langChange", renderCartPage);
+</script>
+</body>
+</html>

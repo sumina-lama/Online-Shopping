@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — Sumina's Stationery</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="product-detail">
+  <div class="container">
+    <a href="shop.html" class="back-link" data-key="back_to_shop">← Back to Shop</a>
+    <div class="product-detail-grid" id="detail-content"></div>
+
+    <!-- Related -->
+    <div style="margin-top:80px;">
+      <h2 class="section-title" style="margin-bottom:32px;" data-key="related_title">You May Also Like</h2>
+      <div class="products-grid" id="related-grid"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+let currentQty = 1;
+const productId = parseInt(new URLSearchParams(window.location.search).get("id")) || 1;
+
+function renderProductDetail() {
+  const p = getProductById(productId);
+  if (!p) return;
+  document.title = `${p.name[currentLang]} — Sumina's Stationery`;
+  const cat = CATEGORIES.find(c => c.id === p.category);
+  const badgeMap = { new:"badge-new", sale:"badge-sale", hot:"badge-hot" };
+  const badgeKey = p.badge ? `badge_${p.badge}` : null;
+
+  document.getElementById("detail-content").innerHTML = `
+    <div>
+      <img src="${p.image}" alt="${p.name[currentLang]}" class="detail-img">
+    </div>
+    <div>
+      ${p.badge ? `<span class="badge ${badgeMap[p.badge]}" style="margin-bottom:12px;display:inline-block;">${t(badgeKey)}</span>` : ""}
+      <p class="detail-cat">${cat ? cat.name[currentLang] : ""}</p>
+      <h1 class="detail-title">${p.name[currentLang]}</h1>
+      <div class="detail-price-wrap">
+        <span class="detail-price">${formatPrice(p.price)}</span>
+        ${p.oldPrice ? `<span class="detail-old-price">${formatPrice(p.oldPrice)}</span>` : ""}
+      </div>
+      <div class="detail-stock" data-key="in_stock">${t("in_stock")}</div>
+      <p class="detail-desc">${p.description[currentLang]}</p>
+      <div class="qty-row">
+        <span class="qty-label" data-key="qty">${t("qty")}:</span>
+        <div class="qty-control">
+          <button class="qty-btn" id="qty-minus">−</button>
+          <span class="qty-val" id="qty-display">1</span>
+          <button class="qty-btn" id="qty-plus">+</button>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn btn-primary" id="add-btn">${t("add_to_cart")}</button>
+        <button class="btn btn-accent" id="buy-btn">${t("buy_now")}</button>
+      </div>
+    </div>`;
+
+  document.getElementById("qty-minus").onclick = () => { if(currentQty>1){currentQty--;document.getElementById("qty-display").textContent=currentQty;} };
+  document.getElementById("qty-plus").onclick = () => { currentQty++;document.getElementById("qty-display").textContent=currentQty; };
+  document.getElementById("add-btn").onclick = () => addToCart(p.id, currentQty);
+  document.getElementById("buy-btn").onclick = () => { addToCart(p.id, currentQty); window.location="cart.html"; };
+
+  // Related products
+  const related = PRODUCTS.filter(pr => pr.category === p.category && pr.id !== p.id).slice(0,4);
+  const rg = document.getElementById("related-grid");
+  rg.innerHTML = related.map(buildProductCard).join("");
+}
+
+renderProductDetail();
+document.addEventListener("langChange", renderProductDetail);
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Sumina's Stationery</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="checkout-page">
+  <div class="container">
+    <h1 class="section-title" style="margin-bottom:32px;" data-key="checkout_title">Checkout</h1>
+
+    <!-- Success Message -->
+    <div class="order-success" id="order-success">
+      <div class="success-icon">🎉</div>
+      <h2 class="success-title" data-key="order_success_title">Order Placed!</h2>
+      <p class="success-msg" data-key="order_success_msg">Thank you for your order! We'll contact you on your phone to confirm delivery.</p>
+      <a href="index.html" class="btn btn-primary" data-key="order_success_btn">Back to Home</a>
+    </div>
+
+    <!-- Checkout Form -->
+    <div class="checkout-grid" id="checkout-form-area">
+      <div class="form-card">
+        <h2 data-key="checkout_info">Customer Information</h2>
+        <form id="checkout-form" novalidate>
+          <div class="form-group">
+            <label data-key="checkout_full_name">Full Name</label>
+            <input type="text" id="c-name" required placeholder="Sumina Shrestha">
+          </div>
+          <div class="form-group">
+            <label data-key="checkout_phone">Phone Number</label>
+            <input type="tel" id="c-phone" required placeholder="98XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label data-key="checkout_email">Email (optional)</label>
+            <input type="email" id="c-email" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label data-key="checkout_address">Delivery Address</label>
+            <input type="text" id="c-address" required placeholder="Street, Ward, Area">
+          </div>
+          <div class="form-group">
+            <label data-key="checkout_city">City</label>
+            <input type="text" id="c-city" required placeholder="Kathmandu">
+          </div>
+          <div class="form-group">
+            <label data-key="checkout_notes">Order Notes (optional)</label>
+            <textarea id="c-notes" placeholder="Any special instructions..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label data-key="checkout_payment">Payment Method</label>
+            <div class="payment-options">
+              <label class="pay-option active" id="pay-cod">
+                <input type="radio" name="payment" value="cod" checked>
+                <span class="pay-icon">💵</span>
+                <span class="pay-label" data-key="pay_cod">Cash on Delivery</span>
+              </label>
+              <label class="pay-option" id="pay-esewa">
+                <input type="radio" name="payment" value="esewa">
+                <span class="pay-icon">💚</span>
+                <span class="pay-label" data-key="pay_esewa">eSewa</span>
+              </label>
+              <label class="pay-option" id="pay-khalti">
+                <input type="radio" name="payment" value="khalti">
+                <span class="pay-icon">💜</span>
+                <span class="pay-label" data-key="pay_khalti">Khalti</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full" style="margin-top:8px;" data-key="checkout_place_order">Place Order</button>
+        </form>
+      </div>
+
+      <div>
+        <div class="summary-card" id="checkout-summary"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function renderCheckoutSummary() {
+  const cart = getCart();
+  const total = getCartTotal();
+  const el = document.getElementById("checkout-summary");
+  if (!el) return;
+  el.innerHTML = `
+    <h3 class="summary-title" data-key="checkout_order_summary">${t("checkout_order_summary")}</h3>
+    ${cart.map(item => {
+      const p = getProductById(item.id);
+      if (!p) return "";
+      return `<div class="summary-row"><span>${p.name[currentLang]} × ${item.qty}</span><span>${formatPrice(p.price * item.qty)}</span></div>`;
+    }).join("")}
+    <div class="summary-divider"></div>
+    <div class="summary-row grand-total">
+      <span data-key="cart_grand_total">${t("cart_grand_total")}</span>
+      <span class="grand-total-price">${formatPrice(total)}</span>
+    </div>`;
+}
+
+renderCheckoutSummary();
+document.addEventListener("langChange", renderCheckoutSummary);
+
+// Payment option styling
+document.querySelectorAll(".pay-option").forEach(opt => {
+  opt.addEventListener("click", () => {
+    document.querySelectorAll(".pay-option").forEach(o => o.classList.remove("active"));
+    opt.classList.add("active");
+  });
+});
+
+// Form submit
+document.getElementById("checkout-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("c-name").value.trim();
+  const phone = document.getElementById("c-phone").value.trim();
+  const address = document.getElementById("c-address").value.trim();
+  const city = document.getElementById("c-city").value.trim();
+  if (!name || !phone || !address || !city) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  clearCart();
+  document.getElementById("checkout-form-area").style.display = "none";
+  const success = document.getElementById("order-success");
+  success.classList.add("show");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

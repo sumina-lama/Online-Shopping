@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumina's Stationery — Premium Stationery in Nepal</title>
+<meta name="description" content="Shop premium notebooks, pens, art supplies and gift sets at Sumina's Stationery. Nepal's favourite stationery store with best prices.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="cart.html" class="cart-icon-btn">
+        🛒<span class="cart-badge" id="cart-badge-1">0</span>
+      </a>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag">✨ <span data-key="hero_tag">Nepal's Favourite Stationery Store</span></div>
+      <h1 class="hero-title" data-key="hero_title">Beautiful Stationery for <em>Every Story</em></h1>
+      <p class="hero-subtitle" data-key="hero_subtitle">Discover premium notebooks, pens, art supplies and gift sets — all at amazing prices in Nepal.</p>
+      <div class="hero-btns">
+        <a href="shop.html" class="btn btn-primary" data-key="hero_btn_shop">Shop Now</a>
+        <a href="#categories" class="btn btn-secondary" data-key="hero_btn_explore">Explore Collections</a>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="images/hero.jpg" alt="Sumina's Stationery" class="hero-img">
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="section-title" data-key="categories_title">Shop by Category</h2>
+      <p class="section-sub" data-key="categories_subtitle">Find exactly what you're looking for</p>
+    </div>
+    <div class="categories-grid" id="categories-grid"></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" style="background:var(--cream2);">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:40px;">
+      <div>
+        <h2 class="section-title" data-key="featured_title">Featured Products</h2>
+        <p class="section-sub" style="margin-bottom:0" data-key="featured_subtitle">Handpicked favourites loved by our customers</p>
+      </div>
+      <a href="shop.html" class="btn btn-secondary" data-key="view_all">View All</a>
+    </div>
+    <div class="products-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<section class="promo-section">
+  <div class="container">
+    <div>
+      <div class="promo-tag-label" data-key="promo_tag">Limited Time Offer</div>
+      <h2 class="promo-title" data-key="promo_title">Back to School Sale!</h2>
+      <p class="promo-desc" data-key="promo_desc">Get up to 30% off on notebooks, pens and student bundles. Valid while stocks last.</p>
+      <a href="shop.html?cat=gifts" class="btn btn-accent" data-key="promo_btn">Shop Sale</a>
+    </div>
+    <div style="font-size:8rem;opacity:.15;">🎒</div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="section-title" data-key="why_title">Why Shop With Us?</h2>
+    </div>
+    <div class="why-grid" style="margin-top:40px;">
+      <div class="why-card">
+        <div class="why-icon">⭐</div>
+        <h3 data-key="why_quality">Premium Quality</h3>
+        <p data-key="why_quality_desc">Carefully curated stationery from trusted brands.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🚚</div>
+        <h3 data-key="why_delivery">Fast Delivery</h3>
+        <p data-key="why_delivery_desc">Delivered across Nepal within 2–5 business days.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <h3 data-key="why_price">Best Prices</h3>
+        <p data-key="why_price_desc">Competitive prices with regular discounts and offers.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💬</div>
+        <h3 data-key="why_support">Friendly Support</h3>
+        <p data-key="why_support_desc">Our team is always ready to help you choose the right product.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Sumina's Stationery</div>
+        <p class="footer-tagline" data-key="footer_tagline">Your one-stop shop for premium stationery in Nepal.</p>
+      </div>
+      <div>
+        <h4 data-key="footer_links">Quick Links</h4>
+        <ul>
+          <li><a href="index.html" data-key="nav_home">Home</a></li>
+          <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+          <li><a href="about.html" data-key="nav_about">About</a></li>
+          <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-key="footer_contact">Contact Us</h4>
+        <ul>
+          <li><a href="tel:+97798XXXXXXXX">📞 +977 98XX-XXXXXX</a></li>
+          <li><a href="mailto:hello@suminastationery.com">✉️ hello@suminastationery.com</a></li>
+          <li><a href="#">📍 Kathmandu, Nepal</a></li>
+          <li><a href="#" data-key="footer_hours">Open: Sun – Fri, 9am – 6pm</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery. All rights reserved.</span>
+      <div class="social-links">
+        <a href="#" class="social-link" title="Facebook">f</a>
+        <a href="#" class="social-link" title="Instagram">📸</a>
+        <a href="#" class="social-link" title="TikTok">♪</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Render categories
+  const catGrid = document.getElementById("categories-grid");
+  CATEGORIES.forEach(cat => {
+    catGrid.innerHTML += `
+      <a href="shop.html?cat=${cat.id}" class="cat-card">
+        <img src="${cat.image}" alt="${cat.name.en}" class="cat-img">
+        <div class="cat-info">
+          <div class="cat-icon">${cat.icon}</div>
+          <div class="cat-name">${cat.name[currentLang]}</div>
+        </div>
+      </a>`;
+  });
+
+  // Render 8 featured products
+  const featGrid = document.getElementById("featured-grid");
+  const featured = PRODUCTS.filter(p => p.badge).slice(0, 8);
+  featured.forEach(p => { featGrid.innerHTML += buildProductCard(p); });
+
+  // Update category names on lang change
+  document.addEventListener("langChange", () => {
+    catGrid.innerHTML = "";
+    CATEGORIES.forEach(cat => {
+      catGrid.innerHTML += `
+        <a href="shop.html?cat=${cat.id}" class="cat-card">
+          <img src="${cat.image}" alt="${cat.name.en}" class="cat-img">
+          <div class="cat-info">
+            <div class="cat-icon">${cat.icon}</div>
+            <div class="cat-name">${cat.name[currentLang]}</div>
+          </div>
+        </a>`;
+    });
+    featGrid.innerHTML = "";
+    featured.forEach(p => { featGrid.innerHTML += buildProductCard(p); });
+  });
+</script>
+</body>
+</html>

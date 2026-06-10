@@ -1,0 +1,17 @@
+# Windows temporary files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Crash logs & system files
+*.log
+.DS_Store

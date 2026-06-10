@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Sumina's Stationery</title>
+<meta name="description" content="Browse all stationery products at Sumina's Stationery. Filter by category, search and sort.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="shop-header">
+  <h1 class="section-title" data-key="shop_title">Our Products</h1>
+  <p class="section-sub" data-key="shop_subtitle">Explore our full collection of premium stationery</p>
+</div>
+
+<section class="section page-top">
+  <div class="container">
+    <!-- Controls -->
+    <div class="shop-controls">
+      <div class="search-bar">
+        <input type="text" id="search-input" data-key="filter_search" placeholder="Search products...">
+      </div>
+      <select class="sort-select" id="sort-select">
+        <option value="default" data-key="sort_default">Default</option>
+        <option value="price-asc" data-key="sort_price_asc">Price: Low to High</option>
+        <option value="price-desc" data-key="sort_price_desc">Price: High to Low</option>
+        <option value="name" data-key="sort_name">Name A-Z</option>
+      </select>
+    </div>
+    <!-- Category Pills -->
+    <div class="cat-pills" id="cat-pills"></div>
+    <!-- Products Grid -->
+    <div class="products-grid" id="shop-grid"></div>
+    <div class="no-results" id="no-results" style="display:none;">
+      <div style="font-size:3rem;margin-bottom:16px;">🔍</div>
+      <p data-key="no_results">No products found.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Sumina's Stationery</div>
+        <p class="footer-tagline" data-key="footer_tagline">Your one-stop shop for premium stationery in Nepal.</p>
+      </div>
+      <div>
+        <h4 data-key="footer_links">Quick Links</h4>
+        <ul>
+          <li><a href="index.html" data-key="nav_home">Home</a></li>
+          <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+          <li><a href="about.html" data-key="nav_about">About</a></li>
+          <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-key="footer_contact">Contact Us</h4>
+        <ul>
+          <li><a href="#">📞 +977 98XX-XXXXXX</a></li>
+          <li><a href="#">✉️ hello@suminastationery.com</a></li>
+          <li><a href="#">📍 Kathmandu, Nepal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+let activeCat = "all";
+
+function renderShopPage() {
+  // Rebuild pills
+  const pillsEl = document.getElementById("cat-pills");
+  pillsEl.innerHTML = `<button class="cat-pill ${activeCat==="all"?"active":""}" data-cat="all">${t("filter_all")}</button>`;
+  CATEGORIES.forEach(c => {
+    pillsEl.innerHTML += `<button class="cat-pill ${activeCat===c.id?"active":""}" data-cat="${c.id}">${c.icon} ${c.name[currentLang]}</button>`;
+  });
+  pillsEl.querySelectorAll(".cat-pill").forEach(btn => {
+    btn.addEventListener("click", () => { activeCat = btn.dataset.cat; renderShopPage(); });
+  });
+
+  let products = getProductsByCategory(activeCat);
+  const query = document.getElementById("search-input").value.toLowerCase();
+  if (query) products = products.filter(p => p.name[currentLang].toLowerCase().includes(query) || p.name.en.toLowerCase().includes(query));
+
+  const sort = document.getElementById("sort-select").value;
+  if (sort === "price-asc") products = [...products].sort((a,b) => a.price - b.price);
+  else if (sort === "price-desc") products = [...products].sort((a,b) => b.price - a.price);
+  else if (sort === "name") products = [...products].sort((a,b) => a.name[currentLang].localeCompare(b.name[currentLang]));
+
+  const grid = document.getElementById("shop-grid");
+  const noResults = document.getElementById("no-results");
+  if (products.length === 0) { grid.innerHTML = ""; noResults.style.display = "block"; }
+  else { noResults.style.display = "none"; grid.innerHTML = products.map(buildProductCard).join(""); }
+}
+
+// Check URL param for pre-selected category
+const urlCat = new URLSearchParams(window.location.search).get("cat");
+if (urlCat) activeCat = urlCat;
+
+renderShopPage();
+
+document.getElementById("search-input").addEventListener("input", renderShopPage);
+document.getElementById("sort-select").addEventListener("change", renderShopPage);
+document.addEventListener("langChange", renderShopPage);
+</script>
+</body>
+</html>
