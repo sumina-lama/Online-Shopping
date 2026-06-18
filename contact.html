@@ -27,6 +27,10 @@
         <button class="lang-btn active" data-lang="en">ENG</button>
         <button class="lang-btn" data-lang="np">NEP</button>
       </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+      </button>
       <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
       <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
     </div>
@@ -35,7 +39,7 @@
 
 <div class="contact-hero">
   <h1 class="section-title" data-key="contact_title">Get in Touch</h1>
-  <p class="section-sub">We'd love to hear from you!</p>
+  <p class="section-sub" data-key="contact_subtitle">We'd love to hear from you!</p>
 </div>
 
 <section>
@@ -43,34 +47,34 @@
     <div class="contact-grid">
       <!-- Info -->
       <div class="contact-info">
-        <h2>Let's Talk Stationery 📝</h2>
-        <p style="color:var(--medium);margin-bottom:28px;line-height:1.8;">Have a question about a product, need help with your order, or just want to say hello? We're always happy to chat!</p>
+        <h2 data-key="contact_info_title">Let's Talk Stationery 📝</h2>
+        <p style="color:var(--medium);margin-bottom:28px;line-height:1.8;" data-key="contact_info_desc">Have a question about a product, need help with your order, or just want to say hello? We're always happy to chat!</p>
 
         <div class="contact-item">
           <div class="contact-item-icon">📞</div>
           <div class="contact-item-text">
-            <strong>Phone / WhatsApp</strong>
+            <strong data-key="contact_label_phone">Phone / WhatsApp</strong>
             <p>+977 98XX-XXXXXX</p>
           </div>
         </div>
         <div class="contact-item">
           <div class="contact-item-icon">✉️</div>
           <div class="contact-item-text">
-            <strong>Email</strong>
+            <strong data-key="contact_label_email">Email</strong>
             <p>hello@suminastationery.com</p>
           </div>
         </div>
         <div class="contact-item">
           <div class="contact-item-icon">📍</div>
           <div class="contact-item-text">
-            <strong>Location</strong>
+            <strong data-key="contact_label_location">Location</strong>
             <p>Kathmandu, Nepal</p>
           </div>
         </div>
         <div class="contact-item">
           <div class="contact-item-icon">🕐</div>
           <div class="contact-item-text">
-            <strong>Business Hours</strong>
+            <strong data-key="contact_label_hours">Business Hours</strong>
             <p data-key="footer_hours">Open: Sun – Fri, 9am – 6pm</p>
           </div>
         </div>
@@ -78,7 +82,7 @@
 
       <!-- Form -->
       <div class="form-card">
-        <h2 data-key="contact_title">Send a Message</h2>
+        <h2 data-key="contact_form_title">Send a Message</h2>
         <div id="contact-success" style="display:none;text-align:center;padding:40px 0;">
           <div style="font-size:3rem;margin-bottom:16px;">✅</div>
           <p style="font-weight:600;color:var(--secondary);" data-key="contact_sent">Message sent! We'll get back to you soon.</p>
@@ -86,15 +90,15 @@
         <form id="contact-form" novalidate>
           <div class="form-group">
             <label data-key="contact_name">Your Name</label>
-            <input type="text" id="msg-name" required placeholder="Sumina Shrestha">
+            <input type="text" id="msg-name" required placeholder="Sumina Shrestha" data-key="contact_placeholder_name">
           </div>
           <div class="form-group">
             <label data-key="contact_email">Your Email</label>
-            <input type="email" id="msg-email" required placeholder="email@example.com">
+            <input type="email" id="msg-email" required placeholder="email@example.com" data-key="contact_placeholder_email">
           </div>
           <div class="form-group">
             <label data-key="contact_message">Your Message</label>
-            <textarea id="msg-body" required style="min-height:140px;" placeholder="Hi, I'd like to ask about..."></textarea>
+            <textarea id="msg-body" required style="min-height:140px;" placeholder="Hi, I'd like to ask about..." data-key="contact_placeholder_msg"></textarea>
           </div>
           <button type="submit" class="btn btn-primary w-full" data-key="contact_send">Send Message</button>
         </form>

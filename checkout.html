@@ -26,6 +26,10 @@
         <button class="lang-btn active" data-lang="en">ENG</button>
         <button class="lang-btn" data-lang="np">NEP</button>
       </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+      </button>
       <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
       <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
     </div>
@@ -51,27 +55,27 @@
         <form id="checkout-form" novalidate>
           <div class="form-group">
             <label data-key="checkout_full_name">Full Name</label>
-            <input type="text" id="c-name" required placeholder="Sumina Shrestha">
+            <input type="text" id="c-name" required placeholder="Sumina Shrestha" data-key="checkout_placeholder_name">
           </div>
           <div class="form-group">
             <label data-key="checkout_phone">Phone Number</label>
-            <input type="tel" id="c-phone" required placeholder="98XXXXXXXX">
+            <input type="tel" id="c-phone" required placeholder="98XXXXXXXX" data-key="checkout_placeholder_phone">
           </div>
           <div class="form-group">
             <label data-key="checkout_email">Email (optional)</label>
-            <input type="email" id="c-email" placeholder="email@example.com">
+            <input type="email" id="c-email" placeholder="email@example.com" data-key="checkout_placeholder_email">
           </div>
           <div class="form-group">
             <label data-key="checkout_address">Delivery Address</label>
-            <input type="text" id="c-address" required placeholder="Street, Ward, Area">
+            <input type="text" id="c-address" required placeholder="Street, Ward, Area" data-key="checkout_placeholder_address">
           </div>
           <div class="form-group">
             <label data-key="checkout_city">City</label>
-            <input type="text" id="c-city" required placeholder="Kathmandu">
+            <input type="text" id="c-city" required placeholder="Kathmandu" data-key="checkout_placeholder_city">
           </div>
           <div class="form-group">
             <label data-key="checkout_notes">Order Notes (optional)</label>
-            <textarea id="c-notes" placeholder="Any special instructions..."></textarea>
+            <textarea id="c-notes" placeholder="Any special instructions..." data-key="checkout_placeholder_notes"></textarea>
           </div>
 
           <div class="form-group">

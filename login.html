@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Sumina's Stationery</title>
+<meta name="description" content="Admin login page for Sumina's Stationery.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <div class="lang-slider"></div>
+        <button class="lang-btn active" data-lang="en">ENG</button>
+        <button class="lang-btn" data-lang="np">NEP</button>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+      </button>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<section class="page-top" style="min-height: calc(100vh - 300px); display: flex; align-items: center; justify-content: center; padding: 120px 24px 80px;">
+  <div class="form-card" style="width: 100%; max-width: 420px; box-shadow: var(--sh-h);">
+    <h2 data-key="login_title" style="text-align: center; margin-bottom: 24px;">Admin Login</h2>
+    <div id="login-error" style="display: none; background: #FFF0F0; border: 1px solid #FFAAAA; color: #D00000; padding: 12px; border-radius: var(--r-sm); margin-bottom: 18px; font-size: 0.9rem; text-align: center;" data-key="login_error">
+      Invalid username or password.
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label data-key="login_username">Username</label>
+        <input type="text" id="username" required placeholder="admin" autofocus>
+      </div>
+      <div class="form-group">
+        <label data-key="login_password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary w-full" style="justify-content: center; margin-top: 10px;" data-key="login_btn">Login</button>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Sumina's Stationery</div>
+        <p class="footer-tagline" data-key="footer_tagline">Your one-stop shop for premium stationery in Nepal.</p>
+      </div>
+      <div>
+        <h4 data-key="footer_links">Quick Links</h4>
+        <ul>
+          <li><a href="index.html" data-key="nav_home">Home</a></li>
+          <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+          <li><a href="about.html" data-key="nav_about">About</a></li>
+          <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-key="footer_contact">Contact Us</h4>
+        <ul>
+          <li><a href="#">📞 +977 98XX-XXXXXX</a></li>
+          <li><a href="#">✉️ hello@suminastationery.com</a></li>
+          <li><a href="#">📍 Kathmandu, Nepal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("login-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+  
+  if (user === "admin" && (pass === "admin" || pass === "admin123")) {
+    localStorage.setItem("ss_admin_logged_in", "true");
+    window.location.href = "admin.html";
+  } else {
+    const errDiv = document.getElementById("login-error");
+    errDiv.style.display = "block";
+  }
+});
+</script>
+</body>
+</html>

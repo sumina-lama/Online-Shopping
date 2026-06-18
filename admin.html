@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Sumina's Stationery</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* Page Specific Admin Styles */
+.admin-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin-table-container {
+  background: var(--white);
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+  overflow-x: auto;
+  margin-top: 30px;
+  border: 1px solid var(--border);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+.admin-table th, .admin-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.admin-table th {
+  background: var(--cream2);
+  font-weight: 600;
+  color: var(--dark);
+}
+.admin-table tr:hover {
+  background: rgba(201, 123, 123, 0.03);
+}
+[data-theme="dark"] .admin-table tr:hover {
+  background: rgba(94, 158, 130, 0.03);
+}
+.admin-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 30px;
+}
+
+/* Modal styling */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(61, 43, 31, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background: var(--white);
+  border-radius: var(--r);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: var(--sh-h);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal-content {
+  transform: translateY(0);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+.modal-header h3 {
+  font-family: var(--font-h);
+  font-size: 1.4rem;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--light);
+  transition: var(--tr);
+}
+.modal-close:hover {
+  color: var(--primary);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media(max-width: 600px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+</style>
+<script>
+// Prevent unauthorized access instantly before rendering body
+if (localStorage.getItem("ss_admin_logged_in") !== "true") {
+  window.location.replace("login.html");
+}
+</script>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">✒️</div>
+      <span class="nav-brand-text">Sumina's <span>Stationery</span></span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" data-key="nav_home">Home</a></li>
+      <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+      <li><a href="about.html" data-key="nav_about">About</a></li>
+      <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <div class="lang-slider"></div>
+        <button class="lang-btn active" data-lang="en">ENG</button>
+        <button class="lang-btn" data-lang="np">NEP</button>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+      </button>
+      <a href="cart.html" class="cart-icon-btn">🛒<span class="cart-badge">0</span></a>
+      <button class="menu-btn" id="menu-btn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<section class="section page-top">
+  <div class="container">
+    <div class="admin-header-row">
+      <div>
+        <h1 class="section-title" data-key="admin_dashboard">Admin Dashboard</h1>
+        <p class="section-sub" data-key="admin_manage_products">Manage your store products dynamically</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddModal()">
+        ➕ <span data-key="admin_add_product">Add New Product</span>
+      </button>
+    </div>
+
+    <div class="admin-table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th data-key="admin_th_image">Image</th>
+            <th data-key="admin_th_name">Name</th>
+            <th data-key="admin_th_category">Category</th>
+            <th data-key="admin_th_price">Price</th>
+            <th data-key="admin_th_oldprice">Old Price</th>
+            <th data-key="admin_th_badge">Badge</th>
+            <th data-key="admin_th_actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-product-rows">
+          <!-- Rows will be injected here dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Product Add/Edit Modal -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modal-title" data-key="admin_add_product">Add New Product</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="product-form" novalidate>
+      <input type="hidden" id="prod-id">
+      
+      <div class="grid-2">
+        <div class="form-group">
+          <label data-key="admin_field_name_en">Name (English)</label>
+          <input type="text" id="prod-name-en" required placeholder="Spiral Notebook A5">
+        </div>
+        <div class="form-group">
+          <label data-key="admin_field_name_np">Name (Nepali)</label>
+          <input type="text" id="prod-name-np" required placeholder="स्पाइरल नोटबुक A5">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label data-key="admin_field_price">Price (NPR)</label>
+          <input type="number" id="prod-price" required placeholder="250">
+        </div>
+        <div class="form-group">
+          <label data-key="admin_field_oldprice">Old Price (NPR, optional)</label>
+          <input type="number" id="prod-oldprice" placeholder="300">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label data-key="admin_field_category">Category</label>
+          <select id="prod-category" required>
+            <!-- Injected dynamically from CATEGORIES -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-key="admin_field_badge">Badge (optional)</label>
+          <select id="prod-badge">
+            <option value="">None</option>
+            <option value="new">New</option>
+            <option value="sale">Sale</option>
+            <option value="hot">Hot</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label data-key="admin_field_image">Image URL / Path</label>
+        <input type="text" id="prod-image" required placeholder="images/spiral-notebook.jpg">
+      </div>
+
+      <div class="form-group">
+        <label data-key="admin_field_desc_en">Description (English)</label>
+        <textarea id="prod-desc-en" required placeholder="Describe the product in English..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label data-key="admin_field_desc_np">Description (Nepali)</label>
+        <textarea id="prod-desc-np" required placeholder="Describe the product in Nepali..."></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()" data-key="admin_btn_cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm" data-key="admin_btn_save">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Sumina's Stationery</div>
+        <p class="footer-tagline" data-key="footer_tagline">Your one-stop shop for premium stationery in Nepal.</p>
+      </div>
+      <div>
+        <h4 data-key="footer_links">Quick Links</h4>
+        <ul>
+          <li><a href="index.html" data-key="nav_home">Home</a></li>
+          <li><a href="shop.html" data-key="nav_shop">Shop</a></li>
+          <li><a href="about.html" data-key="nav_about">About</a></li>
+          <li><a href="contact.html" data-key="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-key="footer_contact">Contact Us</h4>
+        <ul>
+          <li><a href="#">📞 +977 98XX-XXXXXX</a></li>
+          <li><a href="#">✉️ hello@suminastationery.com</a></li>
+          <li><a href="#">📍 Kathmandu, Nepal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" data-key="footer_rights">© 2025 Sumina's Stationery. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/language.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+// Initialize Category Options
+const catSelect = document.getElementById("prod-category");
+if (catSelect) {
+  CATEGORIES.forEach(c => {
+    catSelect.innerHTML += `<option value="${c.id}">${c.name.en}</option>`;
+  });
+}
+
+// Render Table Rows
+function renderAdminProducts() {
+  const tbody = document.getElementById("admin-product-rows");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+  
+  PRODUCTS.forEach(p => {
+    const name = p.name[currentLang];
+    const cat = CATEGORIES.find(c => c.id === p.category)?.name[currentLang] || p.category;
+    const badgeText = p.badge ? t(`badge_${p.badge}`) : "-";
+    
+    tbody.innerHTML += `
+      <tr>
+        <td><img src="${p.image}" alt="${name}" class="admin-img"></td>
+        <td style="font-weight:600;">${name}</td>
+        <td><span class="badge badge-new" style="background:var(--cream2);color:var(--dark);border:1px solid var(--border);">${cat}</span></td>
+        <td style="color:var(--primary);font-weight:700;">${formatPrice(p.price)}</td>
+        <td>${p.oldPrice ? formatPrice(p.oldPrice) : "-"}</td>
+        <td>${p.badge ? `<span class="badge badge-${p.badge}">${badgeText}</span>` : "-"}</td>
+        <td>
+          <div class="admin-actions">
+            <button class="btn btn-primary btn-sm" onclick="openEditModal(${p.id})">${t("admin_action_edit")}</button>
+            <button class="btn btn-secondary btn-sm" style="color:#d00000; border-color:#ffa9a9;" onclick="deleteProduct(${p.id})">${t("admin_action_delete")}</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// Modal Toggle Functions
+function openAddModal() {
+  document.getElementById("prod-id").value = "";
+  document.getElementById("product-form").reset();
+  
+  const title = document.getElementById("modal-title");
+  title.textContent = t("admin_add_product");
+  title.setAttribute("data-key", "admin_add_product");
+  
+  document.getElementById("product-modal").classList.add("open");
+}
+
+function openEditModal(id) {
+  const p = getProductById(id);
+  if (!p) return;
+  
+  document.getElementById("prod-id").value = p.id;
+  document.getElementById("prod-name-en").value = p.name.en;
+  document.getElementById("prod-name-np").value = p.name.np;
+  document.getElementById("prod-price").value = p.price;
+  document.getElementById("prod-oldprice").value = p.oldPrice || "";
+  document.getElementById("prod-category").value = p.category;
+  document.getElementById("prod-badge").value = p.badge || "";
+  document.getElementById("prod-image").value = p.image;
+  document.getElementById("prod-desc-en").value = p.description.en;
+  document.getElementById("prod-desc-np").value = p.description.np;
+  
+  const title = document.getElementById("modal-title");
+  title.textContent = t("admin_edit_product");
+  title.setAttribute("data-key", "admin_edit_product");
+  
+  document.getElementById("product-modal").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("product-modal").classList.remove("open");
+}
+
+// Save Product
+document.getElementById("product-form").addEventListener("submit", e => {
+  e.preventDefault();
+  
+  const idVal = document.getElementById("prod-id").value;
+  const nameEn = document.getElementById("prod-name-en").value.trim();
+  const nameNp = document.getElementById("prod-name-np").value.trim();
+  const price = parseFloat(document.getElementById("prod-price").value);
+  const oldPriceVal = document.getElementById("prod-oldprice").value;
+  const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
+  const category = document.getElementById("prod-category").value;
+  const badge = document.getElementById("prod-badge").value;
+  const image = document.getElementById("prod-image").value.trim();
+  const descEn = document.getElementById("prod-desc-en").value.trim();
+  const descNp = document.getElementById("prod-desc-np").value.trim();
+  
+  if (!nameEn || !nameNp || isNaN(price) || !image || !descEn || !descNp) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  
+  const productData = {
+    id: idVal ? parseInt(idVal) : (PRODUCTS.reduce((max, prod) => Math.max(max, prod.id), 0) + 1),
+    name: { en: nameEn, np: nameNp },
+    category,
+    price,
+    oldPrice,
+    badge: badge || null,
+    image,
+    description: { en: descEn, np: descNp }
+  };
+  
+  if (idVal) {
+    // Edit Mode
+    const index = PRODUCTS.findIndex(p => p.id === parseInt(idVal));
+    if (index !== -1) {
+      PRODUCTS[index] = productData;
+    }
+  } else {
+    // Add Mode
+    PRODUCTS.push(productData);
+  }
+  
+  saveProductsToStorage(PRODUCTS);
+  closeModal();
+  renderAdminProducts();
+});
+
+// Delete Product
+function deleteProduct(id) {
+  if (confirm(t("admin_confirm_delete"))) {
+    const updated = PRODUCTS.filter(p => p.id !== id);
+    saveProductsToStorage(updated);
+    renderAdminProducts();
+  }
+}
+
+// Re-render when language switches
+document.addEventListener("langChange", () => {
+  renderAdminProducts();
+});
+
+// Initial Render
+document.addEventListener("DOMContentLoaded", () => {
+  renderAdminProducts();
+});
+</script>
+</body>
+</html>

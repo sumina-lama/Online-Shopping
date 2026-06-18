@@ -2,7 +2,7 @@
 // SUMINA'S STATIONERY — Product Data
 // ============================================
 
-const PRODUCTS = [
+const DEFAULT_PRODUCTS = [
   // ---- Notebooks & Journals ----
   {
     id: 1,
@@ -11,7 +11,7 @@ const PRODUCTS = [
     price: 250,
     oldPrice: null,
     badge: "new",
-    image: "images/cat-notebooks.jpg",
+    image: "images/spiral-notebook.jpg",
     description: {
       en: "Perfect for everyday notes, journaling, and quick sketches. 200 pages of smooth 80 GSM paper.",
       np: "दैनिक नोट, जर्नलिङ, र स्केचको लागि उत्तम। ८० जिएसएम चिल्लो कागजका २०० पाना।"
@@ -24,7 +24,7 @@ const PRODUCTS = [
     price: 450,
     oldPrice: 550,
     badge: "sale",
-    image: "images/cat-notebooks.jpg",
+    image: "images/hardcover-journal.jpg",
     description: {
       en: "Premium hardcover journal with gold-edged pages. 200 pages, lay-flat binding. A timeless keepsake.",
       np: "गोल्ड एज पाना सहितको प्रिमियम हार्डकभर जर्नल। २०० पाना, ले-फ्ल्याट बाइन्डिङ।"
@@ -37,7 +37,7 @@ const PRODUCTS = [
     price: 180,
     oldPrice: null,
     badge: null,
-    image: "images/cat-notebooks.jpg",
+    image: "images/mini-notepad.jpg",
     description: {
       en: "Set of 3 colorful mini notepads in pastel shades. Perfect for quick memos and lists.",
       np: "प्यास्टल रंगमा ३ वटा रंगीन मिनी नोटप्याडको सेट। छिटो मेमो र सूचीका लागि उत्तम।"
@@ -276,6 +276,17 @@ const PRODUCTS = [
   }
 ];
 
+let PRODUCTS = JSON.parse(localStorage.getItem("ss_products"));
+if (!PRODUCTS || PRODUCTS.length === 0) {
+  PRODUCTS = DEFAULT_PRODUCTS;
+  localStorage.setItem("ss_products", JSON.stringify(PRODUCTS));
+}
+
+function saveProductsToStorage(newProducts) {
+  PRODUCTS = newProducts;
+  localStorage.setItem("ss_products", JSON.stringify(PRODUCTS));
+}
+
 // Category metadata
 const CATEGORIES = [
   { id: "notebooks", name: { en: "Notebooks & Journals", np: "नोटबुक र जर्नल" }, icon: "📓", image: "images/cat-notebooks.jpg" },
@@ -299,5 +310,11 @@ function getProductsByCategory(category) {
 
 // Format price in NPR
 function formatPrice(price) {
-  return "रू " + price.toLocaleString("ne-NP");
+  const symbol = typeof t === "function" ? t("currency") : "Rs.";
+  let formatted = price.toLocaleString();
+  if (typeof currentLang !== "undefined" && currentLang === "np") {
+    const nepaliDigits = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
+    formatted = formatted.replace(/[0-9]/g, digit => nepaliDigits[parseInt(digit)]);
+  }
+  return symbol + " " + formatted;
 }
